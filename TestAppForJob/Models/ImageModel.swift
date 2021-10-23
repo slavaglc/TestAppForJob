@@ -1,6 +1,6 @@
-
+import Foundation
 
 struct ImageModel: Decodable {
-    let imageURL: String!
+    let message: String!
     let status: String!
 }
