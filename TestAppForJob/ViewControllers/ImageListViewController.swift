@@ -16,7 +16,8 @@ final class ImageListViewController: UICollectionViewController, UICollectionVie
     private var directionIsDown = false
     private var contentOffset = CGPoint.zero
     private var currentOffset = CGPoint.zero
-    private var cvCounter = 1
+    private var cvCounter = 0
+    private var fetchingMore = false
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -30,17 +31,11 @@ final class ImageListViewController: UICollectionViewController, UICollectionVie
      
         view.addGestureRecognizer(swipeUp)
         view.addGestureRecognizer(swipeDown)
-        
-        //generateImageURL()
-        //generateImageURL()
-        
     }
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        for _ in 1...3 {
-        generateImageURL()
-        }
+        generateImageURLs(count: 100)
     }
     
 
@@ -61,56 +56,46 @@ final class ImageListViewController: UICollectionViewController, UICollectionVie
 //            generateImage()
 //        }
         
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "ImageCell", for: indexPath)
-        imageDataManager.downloadImageData(url: imageLinks[indexPath.item]) { imageData in
+       
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "ImageCell", for: indexPath) as! PhotoCollectionViewCell
+        
+        DispatchQueue.global().async { [unowned self] in
+            
+            let urlString = imageLinks[indexPath.item]
+            //print(urlString, cvCounter)
+            guard let imageUrl = URL (string: urlString) else { return }
+            guard let imageData = try? Data(contentsOf: imageUrl) else { return }
             guard let image = UIImage(data: imageData) else { return }
+            
+            
             DispatchQueue.main.async {
-                let imageView = UIImageView(image: image)
                 let frame = CGRect(x: 0, y: 0, width: cell.contentView.frame.width, height: cell.contentView.frame.height)
-                imageView.frame = frame
-                cell.addSubview(imageView)
-//                if self.imageLinks.count < self.maxCount{
-//                    self.generateImageURL()
-//                }
+                let imageView = UIImageView(image: image)
+                cell.imageView.image = image
+            }
                 
             }
-            print(self.imageLinks.count)
-        }
+                
+            
         
-        
-        
-//        let image = images[indexPath.item]
-//        let imageView = UIImageView(image: image)
-//        let frame = CGRect(x: 0, y: 0, width: cell.contentView.frame.width, height: cell.contentView.frame.height)
-//        imageView.frame = frame
-        
-//        imageDataManager.fetchRandomImageData { imageData in
-//            DispatchQueue.main.async { [self] in
-//            guard let image = UIImage(data: imageData) else{ return }
-//            let imageView = UIImageView(image: image)
-//            cell.contentView.backgroundColor = .blue
-//            cell.contentView.addSubview(imageView)
-//                cvCounter += 1
-//            }
-//        }
-        
-        
-        
+                
+            //print(self.imageLinks.count)
+  
         return cell
     }
     
     
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        CGSize(width: UIScreen.main.bounds.width / 3 , height: UIScreen.main.bounds.width / 3 )
+        CGSize(width: UIScreen.main.bounds.width / 3.2 , height: UIScreen.main.bounds.width / 3.2 )
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
-        UIEdgeInsets(top: 10, left: 0, bottom: 10, right: 0)
+        UIEdgeInsets(top: 10, left: 3, bottom: 10, right: 3)
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
-        0
+        3
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
@@ -118,28 +103,67 @@ final class ImageListViewController: UICollectionViewController, UICollectionVie
     }
     
     override func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        currentOffset = CGPoint(x: scrollView.contentOffset.x, y: scrollView.contentOffset.y)
-        contentOffset.y = scrollView.contentSize.height - scrollView.bounds.height
-//        print("currentOffset:", currentOffset.y, "contentSize:", contentOffset.y)
-    }
-    
-    
-    
-    private func generateImageURL() {
+        currentOffset.y = scrollView.contentOffset.y
+        contentOffset.y = scrollView.contentSize.height - scrollView.frame.height
+        print("currentOffset:", currentOffset.y, "contentSize:", contentOffset.y)
         
-        imageDataManager.fetchRandomImageURL { [unowned self] url in
-           // guard let image = UIImage(data: imageData) else { return }
-            imageLinks.append(url)
-//            DispatchQueue.main.async {
-//                collectionView.reloadData()
-//            }
-            
+        if currentOffset.y > contentOffset.y {
+            if !fetchingMore {
+                print("fetchingMore...")
+                DispatchQueue.main.asyncAfter(deadline: .now() + 3) { [unowned self] in
+                    generateImageURLs(count: 12)
+                    print("+12")
+                }
+            }
         }
         
-        collectionView.reloadData()
+        
     }
     
     
+    
+    
+    
+    private func generateImageURLs(count: Int) {
+        fetchingMore = true
+        let group = DispatchGroup()
+        let group2 = DispatchGroup()
+        
+        for iteration in 0...count {
+            
+            group.enter()
+            group2.enter()
+            
+            imageDataManager.fetchRandomImageURL { [unowned self] url in
+                imageLinks.append(url)
+                
+                if iteration == count {
+                    group2.leave()
+                }
+                
+                group.leave()
+                
+            }
+            
+    
+        }
+        
+        group2.notify(queue: .main) {
+            print("group 2 started")
+        }
+        
+        group.notify(queue: .main) {
+            self.collectionView.reloadData()
+        }
+        
+    }
+    
+    override func scrollViewDidEndScrollingAnimation(_ scrollView: UIScrollView) {
+        
+    }
+    override func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
+        print("scrollEnding")
+    }
 }
 
 @available(iOS 13.0, *)

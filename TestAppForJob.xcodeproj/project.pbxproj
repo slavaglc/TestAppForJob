@@ -19,6 +19,7 @@
 		F9BE97302723F0C500979AFE /* ImageDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9BE972F2723F0C500979AFE /* ImageDetailViewController.swift */; };
 		F9BE973A2724000400979AFE /* ImageModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9BE97392724000400979AFE /* ImageModel.swift */; };
 		F9BE973C2724007000979AFE /* ImageDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9BE973B2724007000979AFE /* ImageDataManager.swift */; };
+		F9BE973E2725C88800979AFE /* PhotoCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9BE973D2725C88800979AFE /* PhotoCollectionViewCell.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -55,6 +56,7 @@
 		F9BE972F2723F0C500979AFE /* ImageDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageDetailViewController.swift; sourceTree = "<group>"; };
 		F9BE97392724000400979AFE /* ImageModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageModel.swift; sourceTree = "<group>"; };
 		F9BE973B2724007000979AFE /* ImageDataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageDataManager.swift; sourceTree = "<group>"; };
+		F9BE973D2725C88800979AFE /* PhotoCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = PhotoCollectionViewCell.swift; path = Cells/PhotoCollectionViewCell.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -85,6 +87,7 @@
 		F9BE96F32723EF2B00979AFE = {
 			isa = PBXGroup;
 			children = (
+				F9BE973D2725C88800979AFE /* PhotoCollectionViewCell.swift */,
 				F9BE96FE2723EF2B00979AFE /* TestAppForJob */,
 				F9BE97152723EF2C00979AFE /* TestAppForJobTests */,
 				F9BE971F2723EF2C00979AFE /* TestAppForJobUITests */,
@@ -295,6 +298,7 @@
 				F9BE973C2724007000979AFE /* ImageDataManager.swift in Sources */,
 				F9BE973A2724000400979AFE /* ImageModel.swift in Sources */,
 				F9BE97002723EF2B00979AFE /* AppDelegate.swift in Sources */,
+				F9BE973E2725C88800979AFE /* PhotoCollectionViewCell.swift in Sources */,
 				F9BE97022723EF2B00979AFE /* SceneDelegate.swift in Sources */,
 				F9BE97302723F0C500979AFE /* ImageDetailViewController.swift in Sources */,
 			);
