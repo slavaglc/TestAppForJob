@@ -20,17 +20,18 @@ final class ImageListViewController: UICollectionViewController, UICollectionVie
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        let swipeUp = UISwipeGestureRecognizer(target: self, action: #selector(respondToSwipeGesture(gesture:)))
-        let swipeDown = UISwipeGestureRecognizer(target: self, action: #selector(respondToSwipeGesture(gesture:)))
-        swipeUp.direction = UISwipeGestureRecognizer.Direction.up
-        swipeDown.direction = UISwipeGestureRecognizer.Direction.down
-        
-        swipeUp.delegate = self
-        swipeDown.delegate = self
-     
-        view.addGestureRecognizer(swipeUp)
-        view.addGestureRecognizer(swipeDown)
         self.collectionView.register(ImageCell.self, forCellWithReuseIdentifier: ImageCell.nameOfClass)
+//        let swipeUp = UISwipeGestureRecognizer(target: self, action: #selector(respondToSwipeGesture(gesture:)))
+//        let swipeDown = UISwipeGestureRecognizer(target: self, action: #selector(respondToSwipeGesture(gesture:)))
+//        swipeUp.direction = UISwipeGestureRecognizer.Direction.up
+//        swipeDown.direction = UISwipeGestureRecognizer.Direction.down
+//
+//        swipeUp.delegate = self
+//        swipeDown.delegate = self
+//
+//        view.addGestureRecognizer(swipeUp)
+//        view.addGestureRecognizer(swipeDown)
+        
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -133,32 +134,32 @@ final class ImageListViewController: UICollectionViewController, UICollectionVie
     }
 }
 
-@available(iOS 13.0, *)
-extension ImageListViewController: UIGestureRecognizerDelegate {
-    
-    func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWith otherGestureRecognizer: UIGestureRecognizer) -> Bool {
-            return true
-        }
-    
-    func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldReceive touch: UITouch) -> Bool {
-            return true
-        }
-    
-    @objc func respondToSwipeGesture(gesture: UIGestureRecognizer) {
-           if let swipeGesture = gesture as? UISwipeGestureRecognizer {
-               switch swipeGesture.direction {
-               case UISwipeGestureRecognizer.Direction.down:
-                   print("swipeDown")
-                   directionIsDown = true
-               case UISwipeGestureRecognizer.Direction.up:
-                   directionIsDown = false
-                   print("swipeUp")
-               default:
-                   break
-               }
-           }
-       }
-}
+//@available(iOS 13.0, *)
+//extension ImageListViewController: UIGestureRecognizerDelegate {
+//
+//    func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWith otherGestureRecognizer: UIGestureRecognizer) -> Bool {
+//            return true
+//        }
+//
+//    func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldReceive touch: UITouch) -> Bool {
+//            return true
+//        }
+//
+//    @objc func respondToSwipeGesture(gesture: UIGestureRecognizer) {
+//           if let swipeGesture = gesture as? UISwipeGestureRecognizer {
+//               switch swipeGesture.direction {
+//               case UISwipeGestureRecognizer.Direction.down:
+//                   print("swipeDown")
+//                   directionIsDown = true
+//               case UISwipeGestureRecognizer.Direction.up:
+//                   directionIsDown = false
+//                   print("swipeUp")
+//               default:
+//                   break
+//               }
+//           }
+//       }
+//}
 
 
 
