@@ -56,7 +56,7 @@
 		F9BE972F2723F0C500979AFE /* ImageDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageDetailViewController.swift; sourceTree = "<group>"; };
 		F9BE97392724000400979AFE /* ImageModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageModel.swift; sourceTree = "<group>"; };
 		F9BE973B2724007000979AFE /* ImageDataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageDataManager.swift; sourceTree = "<group>"; };
-		F9BE973D2725C88800979AFE /* PhotoCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = PhotoCollectionViewCell.swift; path = Cells/PhotoCollectionViewCell.swift; sourceTree = "<group>"; };
+		F9BE973D2725C88800979AFE /* PhotoCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoCollectionViewCell.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -84,10 +84,17 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		F9BE96F32723EF2B00979AFE = {
+		F97DA996272DDC16007E552C /* Cells */ = {
 			isa = PBXGroup;
 			children = (
 				F9BE973D2725C88800979AFE /* PhotoCollectionViewCell.swift */,
+			);
+			path = Cells;
+			sourceTree = "<group>";
+		};
+		F9BE96F32723EF2B00979AFE = {
+			isa = PBXGroup;
+			children = (
 				F9BE96FE2723EF2B00979AFE /* TestAppForJob */,
 				F9BE97152723EF2C00979AFE /* TestAppForJobTests */,
 				F9BE971F2723EF2C00979AFE /* TestAppForJobUITests */,
@@ -108,6 +115,7 @@
 		F9BE96FE2723EF2B00979AFE /* TestAppForJob */ = {
 			isa = PBXGroup;
 			children = (
+				F97DA996272DDC16007E552C /* Cells */,
 				F9BE96FF2723EF2B00979AFE /* AppDelegate.swift */,
 				F9BE97012723EF2B00979AFE /* SceneDelegate.swift */,
 				F9BE97382723FF8C00979AFE /* Models */,
@@ -227,7 +235,7 @@
 			attributes = {
 				BuildIndependentTargetsInParallel = 1;
 				LastSwiftUpdateCheck = 1300;
-				LastUpgradeCheck = 1300;
+				LastUpgradeCheck = 1310;
 				TargetAttributes = {
 					F9BE96FB2723EF2B00979AFE = {
 						CreatedOnToolsVersion = 13.0;
@@ -488,7 +496,7 @@
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -518,7 +526,7 @@
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",

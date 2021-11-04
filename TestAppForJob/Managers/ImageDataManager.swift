@@ -33,12 +33,31 @@ final class ImageDataManager {
         }.resume()
     }
     
-    func downloadImageData(url: String, completion: @escaping (_ imageData: Data)->()) {
+    func downloadImageData(url: String, completion: @escaping (_ imageData: Data,_ response: URLResponse)->()) {
         guard let url = URL(string: url) else { return }
-        URLSession.shared.dataTask(with: url) { (data, _, _) in
-            guard let data = data else { return }
-            completion(data)
+        URLSession.shared.dataTask(with: url) { (data, response, _) in
+            guard let data = data, let response = response else { return }
+            completion(data, response)
         }.resume()
+    }
+    
+    func saveImageDataToCache(data: Data, response: URLResponse) {
+        guard let urlResponse = response.url else { return }
+        let request = URLRequest(url: urlResponse)
+        let cachedResponse = CachedURLResponse(response: response, data: data)
+        URLCache.shared.storeCachedResponse(cachedResponse, for: request)
+    }
+    
+    func getCachedImage(from url: URL, completion: @escaping (UIImage?)->() ) {
+        DispatchQueue.global().sync {
+            let request = URLRequest(url: url)
+            
+            if let cachedResponse = URLCache.shared.cachedResponse(for: request) {
+                completion(UIImage(data: cachedResponse.data))
+            } else {
+                completion(nil)
+            }
+        }
     }
     
 }

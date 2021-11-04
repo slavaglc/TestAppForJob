@@ -12,7 +12,6 @@ final class ImageListViewController: UICollectionViewController, UICollectionVie
     private let imageDataManager = ImageDataManager.shared
     private let maxCount = 300
     private var imageLinks = [String]()
-//    private var images: [UIImage?] = []
     private var directionIsDown = false
     private var contentOffset = CGPoint.zero
     private var currentOffset = CGPoint.zero
@@ -35,7 +34,10 @@ final class ImageListViewController: UICollectionViewController, UICollectionVie
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        generateImageURLs(count: 100)
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+            self.generateImageURLs(count: 100)
+        }
+        
     }
     
 
@@ -46,41 +48,26 @@ final class ImageListViewController: UICollectionViewController, UICollectionVie
     
 
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-//        contentOffset = collectionView.contentOffset
-       
-        
-//        print(directionIsDown)
-//        print("currentOffset:", currentOffset.y, "contentSize:", contentOffset.y)
-//        if currentOffset.y > (contentOffset.y - 200) && !directionIsDown {
-//            print("generating...")
-//            generateImage()
-//        }
-        
-       
+        print("Item Number:", indexPath.item)
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "ImageCell", for: indexPath) as! PhotoCollectionViewCell
+        cell.imageView.image = nil
         
-        DispatchQueue.global().async { [unowned self] in
-            
             let urlString = imageLinks[indexPath.item]
-            //print(urlString, cvCounter)
-            guard let imageUrl = URL (string: urlString) else { return }
-            guard let imageData = try? Data(contentsOf: imageUrl) else { return }
-            guard let image = UIImage(data: imageData) else { return }
+            guard let imageURL = URL(string: urlString) else {
+                print("emtpy cell...")
+                return cell}
             
-            
-            DispatchQueue.main.async {
-                let frame = CGRect(x: 0, y: 0, width: cell.contentView.frame.width, height: cell.contentView.frame.height)
-                let imageView = UIImageView(image: image)
-                cell.imageView.image = image
+            imageDataManager.getCachedImage(from: imageURL) { [unowned self] image in
+                DispatchQueue.main.async {
+                guard let image = image else {
+                    downloadImage(for: cell, with: urlString)
+                    return
+                }
+//                print("fetching from cache...")
+                    cell.imageView.image = image
+                }
             }
-                
-            }
-                
-            
         
-                
-            //print(self.imageLinks.count)
-  
         return cell
     }
     
@@ -103,21 +90,20 @@ final class ImageListViewController: UICollectionViewController, UICollectionVie
     }
     
     override func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        currentOffset.y = scrollView.contentOffset.y
-        contentOffset.y = scrollView.contentSize.height - scrollView.frame.height
-        print("currentOffset:", currentOffset.y, "contentSize:", contentOffset.y)
+        currentOffset.x = scrollView.contentOffset.x
+        contentOffset.x = scrollView.contentSize.width - scrollView.frame.width
+//        print("currentOffset:", currentOffset.y, "contentSize:", contentOffset.y)
         
-        if currentOffset.y > contentOffset.y {
+        if currentOffset.x > contentOffset.x {
             if !fetchingMore {
+                fetchingMore = true
                 print("fetchingMore...")
-                DispatchQueue.main.asyncAfter(deadline: .now() + 3) { [unowned self] in
-                    generateImageURLs(count: 12)
-                    print("+12")
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) { [unowned self] in
+                    generateImageURLs(count: 20)
+                    print("+20")
                 }
             }
         }
-        
-        
     }
     
     
@@ -125,37 +111,45 @@ final class ImageListViewController: UICollectionViewController, UICollectionVie
     
     
     private func generateImageURLs(count: Int) {
-        fetchingMore = true
-        let group = DispatchGroup()
-        let group2 = DispatchGroup()
+        let groupForAddingImage = DispatchGroup()
+        let groupForFinishingLoad = DispatchGroup()
         
+        groupForFinishingLoad.enter()
         for iteration in 0...count {
             
-            group.enter()
-            group2.enter()
-            
             imageDataManager.fetchRandomImageURL { [unowned self] url in
+                groupForAddingImage.enter()
                 imageLinks.append(url)
                 
+                groupForAddingImage.leave()
+                
                 if iteration == count {
-                    group2.leave()
+                    groupForFinishingLoad.leave()
                 }
-                
-                group.leave()
-                
             }
             
     
         }
         
-        group2.notify(queue: .main) {
-            print("group 2 started")
+        groupForFinishingLoad.notify(queue: .global(qos: .background)) {
+            self.fetchingMore = false
         }
         
-        group.notify(queue: .main) {
+        groupForAddingImage.notify(queue: .main) {
             self.collectionView.reloadData()
         }
         
+    }
+    
+    private func downloadImage(for cell: PhotoCollectionViewCell, with url: String) {
+        imageDataManager.downloadImageData(url: url) { imageData, response in
+//            print("download...")
+            DispatchQueue.main.async {
+            cell.imageView.image = UIImage(data: imageData)
+            cell.moveIn()
+            self.imageDataManager.saveImageDataToCache(data: imageData, response: response)
+            }
+        }
     }
     
     override func scrollViewDidEndScrollingAnimation(_ scrollView: UIScrollView) {
