@@ -1,7 +1,7 @@
 import UIKit
 
 class ImageCell: UICollectionViewCell {
-    
+    var key: Int?
     private let imageView = UIImageView()
         
     override init(frame: CGRect) {
@@ -18,6 +18,13 @@ class ImageCell: UICollectionViewCell {
         super.layoutSubviews()
         self.imageView.frame = self.contentView.frame
     }
+    
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        if imageView.image != nil {
+            imageView.image = nil
+        }
+    }
         
     private func initialize() {
         self.addSubview(self.imageView)
@@ -30,18 +37,20 @@ class ImageCell: UICollectionViewCell {
         ImageDataManager.shared.downloadImageData(url: url.absoluteString) { imageData, response in
             print("downloading...")
             guard let image = UIImage(data: imageData) else { return }
-            ImageDataManager.shared.saveImageDataToCache(data: imageData, response: response)
+            guard let key = self.key else { return }
+            ImageDataManager.shared.saveImageDataToCache(with: image, forKey: key)
             DispatchQueue.main.async {
                 self.imageView.image = image
             }
         }
     }
     
-    public func setImage(by urlString: String) {
+    public func setImage(by urlString: String, for key: Int) {
+        self.key = key
         guard let url = URL.init(string: urlString) else {
             print("некорректный url")
             return }
-        ImageDataManager.shared.getCachedImage(from: url) { image in
+        ImageDataManager.shared.getCachedImage(from: key) { image in
             guard let image = image else {
                 self.downloadImage(with: url)
                 return
@@ -55,7 +64,7 @@ class ImageCell: UICollectionViewCell {
     }
     
     
-    func moveIn() {
+    public func moveIn() {
         transform = CGAffineTransform(scaleX: 1.35, y: 1.35)
         alpha = 0.0
         isHidden = false

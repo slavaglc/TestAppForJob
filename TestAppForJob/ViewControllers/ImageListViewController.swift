@@ -50,10 +50,13 @@ final class ImageListViewController: UICollectionViewController, UICollectionVie
     
 
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "ImageCell", for: indexPath) as! ImageCell
-        cell.setImage(by: imageLinks[indexPath.row])
         return cell
+    }
+    
+    override func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
+        guard let cell = cell as? ImageCell else { return }
+                cell.setImage(by: imageLinks[indexPath.item], for: indexPath.item)
     }
     
     

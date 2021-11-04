@@ -6,12 +6,17 @@ import UIKit
 
 final class ImageDataManager {
     static let shared = ImageDataManager()
+    let cache = NSCache<NSNumber, UIImage>()
+    let maxImagesForCache = 300
     
-    private init() {}
+    private init() {
+        cache.countLimit = maxImagesForCache
+        cache.totalCostLimit = 150 * 1024 * 1024
+    }
     
     public func fetchRandomImageURL(completion: @escaping (_ url: String)->()) {
         guard let url = URL(string: "https://dog.ceo/api/breeds/image/random" ) else { return }
-        URLSession.shared.dataTask(with: url) { [unowned self] (data, _, _) in
+        URLSession.shared.dataTask(with: url) { [unowned self] (data, response, _) in
             
             guard let data = data else { return print("failure")}
             
@@ -42,22 +47,39 @@ final class ImageDataManager {
     }
     
     func saveImageDataToCache(data: Data, response: URLResponse) {
-        guard let urlResponse = response.url else { return }
-        let request = URLRequest(url: urlResponse)
-        let cachedResponse = CachedURLResponse(response: response, data: data)
-        URLCache.shared.storeCachedResponse(cachedResponse, for: request)
+            guard let urlResponse = response.url else { return }
+            let request = URLRequest(url: urlResponse)
+            let cachedResponse = CachedURLResponse(response: response, data: data)
+            URLCache.shared.storeCachedResponse(cachedResponse, for: request)
+            print("Saved to cache")
+        
+    }
+    
+    func saveImageDataToCache(with image: UIImage, forKey key: Int) {
+        let numberKey = NSNumber(value: key)
+        cache.setObject(image, forKey: numberKey)
     }
     
     func getCachedImage(from url: URL, completion: @escaping (UIImage?)->() ) {
-        
             let request = URLRequest(url: url)
-            
+        
             if let cachedResponse = URLCache.shared.cachedResponse(for: request) {
                 completion(UIImage(data: cachedResponse.data))
             } else {
                 completion(nil)
             }
         
+        
+    }
+    
+    func getCachedImage(from key: Int, completion: @escaping (UIImage?)->()) {
+        let numberKey = NSNumber(value: key)
+        if let cachedImage = cache.object(forKey: numberKey) {
+            completion(cachedImage)
+        }
+        else {
+            completion(nil)
+        }
     }
     
 }
