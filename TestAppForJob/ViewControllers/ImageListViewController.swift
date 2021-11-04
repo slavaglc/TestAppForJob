@@ -30,6 +30,7 @@ final class ImageListViewController: UICollectionViewController, UICollectionVie
      
         view.addGestureRecognizer(swipeUp)
         view.addGestureRecognizer(swipeDown)
+        self.collectionView.register(ImageCell.self, forCellWithReuseIdentifier: ImageCell.nameOfClass)
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -48,26 +49,9 @@ final class ImageListViewController: UICollectionViewController, UICollectionVie
     
 
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        print("Item Number:", indexPath.item)
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "ImageCell", for: indexPath) as! PhotoCollectionViewCell
-        cell.imageView.image = nil
         
-            let urlString = imageLinks[indexPath.item]
-            guard let imageURL = URL(string: urlString) else {
-                print("emtpy cell...")
-                return cell}
-            
-            imageDataManager.getCachedImage(from: imageURL) { [unowned self] image in
-                DispatchQueue.main.async {
-                guard let image = image else {
-                    downloadImage(for: cell, with: urlString)
-                    return
-                }
-//                print("fetching from cache...")
-                    cell.imageView.image = image
-                }
-            }
-        
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "ImageCell", for: indexPath) as! ImageCell
+        cell.setImage(by: imageLinks[indexPath.row])
         return cell
     }
     
@@ -139,17 +123,6 @@ final class ImageListViewController: UICollectionViewController, UICollectionVie
             self.collectionView.reloadData()
         }
         
-    }
-    
-    private func downloadImage(for cell: PhotoCollectionViewCell, with url: String) {
-        imageDataManager.downloadImageData(url: url) { imageData, response in
-//            print("download...")
-            DispatchQueue.main.async {
-            cell.imageView.image = UIImage(data: imageData)
-            cell.moveIn()
-            self.imageDataManager.saveImageDataToCache(data: imageData, response: response)
-            }
-        }
     }
     
     override func scrollViewDidEndScrollingAnimation(_ scrollView: UIScrollView) {

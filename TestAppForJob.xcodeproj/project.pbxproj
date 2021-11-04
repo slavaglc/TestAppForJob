@@ -19,7 +19,8 @@
 		F9BE97302723F0C500979AFE /* ImageDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9BE972F2723F0C500979AFE /* ImageDetailViewController.swift */; };
 		F9BE973A2724000400979AFE /* ImageModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9BE97392724000400979AFE /* ImageModel.swift */; };
 		F9BE973C2724007000979AFE /* ImageDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9BE973B2724007000979AFE /* ImageDataManager.swift */; };
-		F9BE973E2725C88800979AFE /* PhotoCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9BE973D2725C88800979AFE /* PhotoCollectionViewCell.swift */; };
+		F9E5123B2734488000259B80 /* ImageCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9E5123A2734488000259B80 /* ImageCell.swift */; };
+		F9E5123D27344C0400259B80 /* NSObject+NameOfClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9E5123C27344C0400259B80 /* NSObject+NameOfClass.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -56,7 +57,8 @@
 		F9BE972F2723F0C500979AFE /* ImageDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageDetailViewController.swift; sourceTree = "<group>"; };
 		F9BE97392724000400979AFE /* ImageModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageModel.swift; sourceTree = "<group>"; };
 		F9BE973B2724007000979AFE /* ImageDataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageDataManager.swift; sourceTree = "<group>"; };
-		F9BE973D2725C88800979AFE /* PhotoCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoCollectionViewCell.swift; sourceTree = "<group>"; };
+		F9E5123A2734488000259B80 /* ImageCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageCell.swift; sourceTree = "<group>"; };
+		F9E5123C27344C0400259B80 /* NSObject+NameOfClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSObject+NameOfClass.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -87,7 +89,7 @@
 		F97DA996272DDC16007E552C /* Cells */ = {
 			isa = PBXGroup;
 			children = (
-				F9BE973D2725C88800979AFE /* PhotoCollectionViewCell.swift */,
+				F9E5123A2734488000259B80 /* ImageCell.swift */,
 			);
 			path = Cells;
 			sourceTree = "<group>";
@@ -125,6 +127,7 @@
 				F9BE97082723EF2C00979AFE /* Assets.xcassets */,
 				F9BE970A2723EF2C00979AFE /* LaunchScreen.storyboard */,
 				F9BE970D2723EF2C00979AFE /* Info.plist */,
+				F9E5123C27344C0400259B80 /* NSObject+NameOfClass.swift */,
 			);
 			path = TestAppForJob;
 			sourceTree = "<group>";
@@ -306,7 +309,8 @@
 				F9BE973C2724007000979AFE /* ImageDataManager.swift in Sources */,
 				F9BE973A2724000400979AFE /* ImageModel.swift in Sources */,
 				F9BE97002723EF2B00979AFE /* AppDelegate.swift in Sources */,
-				F9BE973E2725C88800979AFE /* PhotoCollectionViewCell.swift in Sources */,
+				F9E5123D27344C0400259B80 /* NSObject+NameOfClass.swift in Sources */,
+				F9E5123B2734488000259B80 /* ImageCell.swift in Sources */,
 				F9BE97022723EF2B00979AFE /* SceneDelegate.swift in Sources */,
 				F9BE97302723F0C500979AFE /* ImageDetailViewController.swift in Sources */,
 			);

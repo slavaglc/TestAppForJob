@@ -49,7 +49,7 @@ final class ImageDataManager {
     }
     
     func getCachedImage(from url: URL, completion: @escaping (UIImage?)->() ) {
-        DispatchQueue.global().sync {
+        
             let request = URLRequest(url: url)
             
             if let cachedResponse = URLCache.shared.cachedResponse(for: request) {
@@ -57,7 +57,7 @@ final class ImageDataManager {
             } else {
                 completion(nil)
             }
-        }
+        
     }
     
 }
