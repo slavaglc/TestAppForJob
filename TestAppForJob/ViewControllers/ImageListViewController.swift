@@ -101,8 +101,6 @@ final class ImageListViewController: UICollectionViewController, UICollectionVie
                     groupForFinishingLoad.leave()
                 }
             }
-            
-    
         }
         
         groupForFinishingLoad.notify(queue: .global(qos: .background)) {
@@ -112,7 +110,6 @@ final class ImageListViewController: UICollectionViewController, UICollectionVie
         groupForAddingImage.notify(queue: .main) {
             self.collectionView.reloadData()
         }
-        
     }
 }
 

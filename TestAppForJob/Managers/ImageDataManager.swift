@@ -16,7 +16,7 @@ final class ImageDataManager {
     
     public func fetchRandomImageURL(completion: @escaping (_ url: String)->()) {
         guard let url = URL(string: "https://dog.ceo/api/breeds/image/random" ) else { return }
-        URLSession.shared.dataTask(with: url) { [unowned self] (data, response, _) in
+        URLSession.shared.dataTask(with: url) { (data, response, _) in
             
             guard let data = data else { return print("failure")}
             
@@ -34,7 +34,6 @@ final class ImageDataManager {
             } catch let error {
                 print(error)
             }
-           //completion(data, url)
         }.resume()
     }
     
